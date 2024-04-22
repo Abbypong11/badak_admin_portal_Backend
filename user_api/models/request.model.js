@@ -1,12 +1,23 @@
-import { Schema, model } from "mongoose";
+import mongoose from 'mongoose';
 
-// Define Request Schema
-const requestSchema = new Schema({
-  fullName: { type: String, required: true },
+// Define schema for user request
+const userRequestSchema = new mongoose.Schema({
+  name: { type: String, required: true },
   school: { type: String, required: true },
-  programme: { type: String, required: true },
-  certification: { type: String, required: true },
+  certificate: { type: String, required: true },
+  program: { type: String, required: true },
+  status: {
+    type: [String],
+    required: true,
+    enum: ["Verified", "Not verified", "Denied"],
+    default: ["Not verified"]
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' // Reference to the User model
+  }
 });
 
-// Export request model based on  the schema created above
-export const RequestModel = model("Request", requestSchema, "requests");
+// Create a model for user request
+const RequestModel = mongoose.model('UserRequest', userRequestSchema, "user_requests");
+export default RequestModel;
